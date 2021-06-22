@@ -258,7 +258,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
     @Qualifier("idp-ssocircle")
     public ExtendedMetadataDelegate ssoCircleExtendedMetadataProvider()
         throws MetadataProviderException {
-        String idpSSOCircleMetadataURL = "https://idp.ssocircle.com/meta-idp.xml";
+        String idpSSOCircleMetadataURL = "https://api.rnsgudnus.com/storage/sso-rediris.xml";
         HTTPMetadataProvider httpMetadataProvider = new HTTPMetadataProvider(
             this.backgroundTaskTimer, httpClient(), idpSSOCircleMetadataURL);
         httpMetadataProvider.setParserPool(parserPool());
