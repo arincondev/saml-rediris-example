@@ -42,7 +42,8 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         if (!registry.hasMappingForPattern("/static/**")) {
             registry.addResourceHandler("/static/**")
-                .addResourceLocations("/static/");
+                .addResourceLocations("/static/")
+                .addResourceLocations("/saml/metadata");
         }
     }
 
