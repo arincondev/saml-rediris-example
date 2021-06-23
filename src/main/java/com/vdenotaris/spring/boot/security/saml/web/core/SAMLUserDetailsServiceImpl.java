@@ -47,7 +47,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
         // data in the SAML assertion and return UserDetails object describing the user.
 
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(SAMLCredential.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Object.class);
 
             //Create Marshaller
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
