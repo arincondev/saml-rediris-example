@@ -16,8 +16,13 @@
 
 package com.vdenotaris.spring.boot.security.saml.web.core;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +46,32 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
         // The method is supposed to identify local account of user referenced by
         // data in the SAML assertion and return UserDetails object describing the user.
 
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(SAMLCredential.class);
+
+            //Create Marshaller
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            //Required formatting??
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            //Print XML String to Console
+            StringWriter sw = new StringWriter();
+
+            //Write XML to StringWriter
+            jaxbMarshaller.marshal(credential, sw);
+            //Verify XML Content
+            String xmlContent = sw.toString();
+            System.out.println(xmlContent);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
+
         String userID = credential.getNameID().getValue();
 
         LOG.info(userID + " is logged in");
-        LOG.info("SAMLCredential" + credential);
+        LOG.info("SAMLCredential object" + credential);
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
         authorities.add(authority);
