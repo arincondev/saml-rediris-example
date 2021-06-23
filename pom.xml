@@ -115,6 +115,10 @@
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
     </dependencies>
     <scm>
         <connection>scm:git:git@github.com:vdenotaris/spring-boot-security-saml-sample.git</connection>

@@ -42,7 +42,13 @@ public class LandingController {
 		else
 			LOG.debug("Current authentication instance from security context: "
 				+ this.getClass().getSimpleName());
+
+		LOG.debug("Auth" + auth);
+		LOG.debug("User" + user);
+
 		model.addAttribute("username", user.getUsername());
+		model.addAttribute("password", user.getPassword());
+		LOG.debug("Model" + model);
 		return "pages/landing";
 	}
 

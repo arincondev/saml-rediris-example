@@ -18,8 +18,6 @@ package com.vdenotaris.spring.boot.security.saml.web.controllers;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +27,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.saml.metadata.MetadataManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/saml")
@@ -43,18 +41,19 @@ public class SSOController {
 	@Autowired
 	private MetadataManager metadata;
 
-	@RequestMapping(value = "/discovery", method = RequestMethod.GET)
-	public String idpSelection(HttpServletRequest request, Model model) {
+	@GetMapping(value = "/discovery")
+	public String idpSelection(final Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth == null)
+		if (auth == null) {
 			LOG.debug("Current authentication instance from security context is null");
-		else
-			LOG.debug("Current authentication instance from security context: "
-				+ this.getClass().getSimpleName());
+		} else {
+			LOG.debug("Current authentication instance from security context: ".concat(this.getClass().getSimpleName()));
+		}
+
 		if (auth == null || (auth instanceof AnonymousAuthenticationToken)) {
 			Set<String> idps = metadata.getIDPEntityNames();
 			for (String idp : idps)
-				LOG.info("Configured Identity Provider for SSO: " + idp);
+				LOG.info("Configured Identity Provider for SSO: ".concat(idp));
 			model.addAttribute("idps", idps);
 			return "pages/discovery";
 		} else {
@@ -62,5 +61,4 @@ public class SSOController {
 			return "redirect:/landing";
 		}
 	}
-
 }
