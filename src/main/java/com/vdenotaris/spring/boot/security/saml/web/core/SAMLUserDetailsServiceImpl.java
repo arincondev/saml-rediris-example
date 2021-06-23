@@ -49,8 +49,9 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
         authorities.add(authority);
 
-        LOG.info("SAMLCredential attributes" + credential.getAttributes().toString());
-        LOG.info("SAMLCredential additional data" + credential.getAdditionalData().toString());
+        LOG.info("SAMLCredential attributes" + credential.getAttributes().get(0).getName());
+        LOG.info("SAMLCredential attributes size" + credential.getAttributes().size());
+        //LOG.info("SAMLCredential additional data" + credential.getAdditionalData().toString());
         // In a real scenario, this implementation has to locate user in a arbitrary
         // dataStore based on information present in the SAMLCredential and
         // returns such a date in a form of application specific UserDetails object.
