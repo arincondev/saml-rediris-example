@@ -31,6 +31,11 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
@@ -45,7 +50,11 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
         String userID = credential.getNameID().getValue();
 
-        LOG.info(userID + " is logged in");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement je = JsonParser.parseString(String.valueOf(credential));
+        String prettyJsonString = gson.toJson(je);
+
+        LOG.info(prettyJsonString + " is logged in");
         LOG.info("SAMLCredential object" + credential);
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
@@ -55,7 +64,6 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
             for (final XMLObject xml : atr.getAttributeValues()) {
                 LOG.info("SAMLCredential attributes XML getUserData: " + xml.getNoNamespaceSchemaLocation());
                 LOG.info("SAMLCredential attributes XML getUserData: " + xml.getSchemaLocation());
-                LOG.info("SAMLCredential attributes XML getUserData: " + xml.getOrderedChildren().get(0).getElementQName().getLocalPart());
             }
         }
 
