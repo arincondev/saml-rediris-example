@@ -31,16 +31,13 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
-
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
-    @SneakyThrows public Object loadUserBySAML(SAMLCredential credential)
+    public Object loadUserBySAML(SAMLCredential credential)
         throws UsernameNotFoundException {
 
         // The method is supposed to identify local account of user referenced by
@@ -48,11 +45,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
         String userID = credential.getNameID().getValue();
 
-        ObjectMapper Obj = new ObjectMapper();
-
-        String jsonStr = Obj.writeValueAsString(credential);
-
-        LOG.info(jsonStr + " is logged in");
+        LOG.info(userID + " is logged in");
         LOG.info("SAMLCredential object" + credential);
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
