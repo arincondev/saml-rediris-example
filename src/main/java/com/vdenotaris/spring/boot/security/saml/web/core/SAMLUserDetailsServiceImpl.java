@@ -31,10 +31,8 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 
 @Service
 public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
@@ -42,7 +40,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
     // Logger
     private static final Logger LOG = LoggerFactory.getLogger(SAMLUserDetailsServiceImpl.class);
 
-    public Object loadUserBySAML(SAMLCredential credential)
+    @SneakyThrows public Object loadUserBySAML(SAMLCredential credential)
         throws UsernameNotFoundException {
 
         // The method is supposed to identify local account of user referenced by
@@ -50,11 +48,11 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
         String userID = credential.getNameID().getValue();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonElement je = JsonParser.parseString(String.valueOf(credential));
-        String prettyJsonString = gson.toJson(je);
+        ObjectMapper Obj = new ObjectMapper();
 
-        LOG.info(prettyJsonString + " is logged in");
+        String jsonStr = Obj.writeValueAsString(credential);
+
+        LOG.info(jsonStr + " is logged in");
         LOG.info("SAMLCredential object" + credential);
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
