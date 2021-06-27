@@ -53,7 +53,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
         for (final Attribute atr : credential.getAttributes()) {
             for (final XMLObject xml : atr.getAttributeValues()) {
-                LOG.info("SAMLCredential attributes XML getUserData: " + xml.getDOM().getUserData(userID));
+                LOG.info("SAMLCredential attributes XML getUserData: " + xml.getNoNamespaceSchemaLocation());
             }
         }
 
