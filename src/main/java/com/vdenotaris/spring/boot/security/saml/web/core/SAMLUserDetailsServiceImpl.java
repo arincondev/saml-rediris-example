@@ -52,13 +52,13 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
         authorities.add(authority);
 
         for (final Attribute atr : credential.getAttributes()) {
-            ;
             LOG.info("SAMLCredential additionalData: " + credential.getAttribute("displayName").getName());
             LOG.info("SAMLCredential additionalData: " + credential.getAttribute("displayName").getFriendlyName());
             LOG.info("SAMLCredential additionalData: " + credential.getAttribute("displayName").getNameFormat());
             LOG.info("SAMLCredential attributes: " + atr.getName());
             for (final XMLObject xml : atr.getAttributeValues()) {
-                LOG.info("SAMLCredential attributes XML: " + xml.getElementQName().getLocalPart());
+                LOG.info("SAMLCredential attributes XML TAG: " + xml.getDOM().getTagName());
+                LOG.info("SAMLCredential attributes XML getUserData: " + xml.getDOM().getUserData(userID));
             }
         }
 
