@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.schema.XSString;
+import org.opensaml.xml.schema.impl.XSAnyImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,9 +55,7 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
 
         for (final Attribute atr : credential.getAttributes()) {
             for (final XMLObject xml : atr.getAttributeValues()) {
-                LOG.info("SAMLCredential attributes XML: " + xml.getElementQName().getLocalPart());
-                LOG.info("SAMLCredential attributes XML: " + xml.getElementQName().getNamespaceURI());
-                LOG.info("SAMLCredential attributes XML: " + xml.getElementQName().getPrefix());
+                LOG.info("SAMLCredential attributes XML: " + getAttributeValue(xml));
             }
         }
 
@@ -64,6 +64,24 @@ public class SAMLUserDetailsServiceImpl implements SAMLUserDetailsService {
         // dataStore based on information present in the SAMLCredential and
         // returns such a date in a form of application specific UserDetails object.
         return new User(userID, "<abc123>", true, true, true, true, authorities);
+    }
+
+    private String getAttributeValue(XMLObject attributeValue) {
+        return attributeValue == null ?
+            null :
+            attributeValue instanceof XSString ?
+                getStringAttributeValue((XSString) attributeValue) :
+                attributeValue instanceof XSAnyImpl ?
+                    getAnyAttributeValue((XSAnyImpl) attributeValue) :
+                    attributeValue.toString();
+    }
+
+    private String getStringAttributeValue(XSString attributeValue) {
+        return attributeValue.getValue();
+    }
+
+    private String getAnyAttributeValue(XSAnyImpl attributeValue) {
+        return attributeValue.getTextContent();
     }
 
 }
