@@ -288,7 +288,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
         metadataGenerator.setEntityId("com:vdenotaris:spring:sp");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
         metadataGenerator.setIncludeDiscoveryExtension(false);
-        //metadataGenerator.setKeyManager(keyManager());
+        metadataGenerator.setKeyManager(keyManager());
         return metadataGenerator;
     }
 
